@@ -1,0 +1,111 @@
+[
+  {
+    "id": 1,
+    "amount": 15000.00,
+    "sender": "ACME Trading Corp",
+    "receiver": "Global Imports LLC",
+    "date": "2026-08-11T14:30:00Z",
+    "flag_reason": "Exceeds reporting threshold",
+    "status": "PENDING",
+    "risk_score": 85,
+    "account_ref": "ACC-4821"
+  },
+  {
+    "id": 2,
+    "amount": 3500.00,
+    "sender": "John H. Smith",
+    "receiver": "Unknown Merchant #8823",
+    "date": "08/12/2026",
+    "flag_reason": "Unusual merchant category",
+    "status": "PENDING",
+    "risk_score": 48,
+    "account_ref": "ACC-2291"
+  },
+  {
+    "id": 3,
+    "amount": 875.00,
+    "sender": "Green Valley Cafe",
+    "receiver": "Metro Supplies Co",
+    "date": "2026-08-13T09:15:00Z",
+    "flag_reason": "New counterparty, first transaction",
+    "status": "PENDING",
+    "risk_score": 22,
+    "account_ref": "ACC-7734"
+  },
+  {
+    "id": 4,
+    "amount": 22500.00,
+    "sender": "Shell Capital Partners",
+    "receiver": "Offshore Holdings Ltd",
+    "date": "2026-08-13T16:45:00Z",
+    "flag_reason": "High value to offshore entity",
+    "status": "PENDING",
+    "risk_score": 91,
+    "account_ref": "ACC-1102"
+  },
+  {
+    "id": 5,
+    "amount": 1200.00,
+    "sender": "Maria L. Gonzalez",
+    "receiver": "FX Exchange 247",
+    "date": "08/13/2026",
+    "flag_reason": "Currency exchange velocity flag",
+    "status": "PENDING",
+    "risk_score": 33,
+    "account_ref": "ACC-9985"
+  },
+  {
+    "id": 6,
+    "amount": 8750.00,
+    "sender": "Riverside Auto Dealers",
+    "receiver": "FastCash Advance LLC",
+    "date": "2026-08-12T14:05:00Z",
+    "flag_reason": "High-risk business category",
+    "status": "PENDING",
+    "risk_score": 67,
+    "account_ref": "ACC-3344"
+  },
+  {
+    "id": 7,
+    "amount": 45000.00,
+    "sender": "Cash Express Kiosks Inc",
+    "receiver": "Bearer Account CH-009",
+    "date": "08/12/2026",
+    "flag_reason": "Bearer account + high cash volume",
+    "status": "PENDING",
+    "risk_score": 95,
+    "account_ref": "ACC-0012"
+  },
+  {
+    "id": 8,
+    "amount": 10000.00,
+    "sender": "Meridian Freight Ltd",
+    "receiver": "Pacific Route Logistics",
+    "date": "2026-08-12T20:10:00Z",
+    "flag_reason": "Round-number value at reporting threshold",
+    "status": "PENDING",
+    "risk_score": 70,
+    "account_ref": "ACC-5567"
+  },
+  {
+    "id": 9,
+    "amount": 2400.50,
+    "sender": "Harbourfront Dental",
+    "receiver": "Northland Supply Co",
+    "date": "14/08/2026",
+    "flag_reason": "Repeat payment to same beneficiary within 24h",
+    "status": "PENDING",
+    "risk_score": 39,
+    "account_ref": "ACC-6620"
+  },
+  {
+    "id": 10,
+    "amount": 67200.00,
+    "sender": "Vertex Holdings SA",
+    "date": "2026-08-14T08:05:00Z",
+    "flag_reason": "Beneficiary details incomplete",
+    "status": "PENDING",
+    "risk_score": 88,
+    "account_ref": "ACC-8830"
+  }
+]
