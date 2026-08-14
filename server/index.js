@@ -41,14 +41,9 @@ const REQUIRED_FIELDS = [
 ];
 
 const dataPath = path.join(__dirname, '..', 'data', 'transactions.json');
-let transactions = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-
-for (const record of transactions) {
-  const missing = REQUIRED_FIELDS.filter((field) => record[field] === undefined || record[field] === null);
-  if (missing.length) {
-    console.warn(`Transaction ${record.id ?? '(unknown id)'} is missing field(s): ${missing.join(', ')}`);
-  }
-}
+let transactions = [];
+const {loadTransactions} = require('./transactionLoader');
+transactions = loadTransactions();
 
 // TODO SE-016: every review decision gets appended here.
 const auditLog = [];
@@ -89,7 +84,7 @@ if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`RAVL Sentinel scaffold listening on http://localhost:${PORT}`);
     console.log(`Loaded ${transactions.length} transactions.`);
-    console.log(transactions);
+    // console.log(transactions);
     console.log('Nothing is implemented yet. SE-002 and SE-003 are the way in.');
   });
 }
