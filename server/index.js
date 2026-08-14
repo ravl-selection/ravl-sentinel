@@ -27,10 +27,7 @@ app.use(express.static(path.join(__dirname, '..', 'client')));
 // ---------------------------------------------------------------------------
 
 // TODO SE-002: load and validate data/transactions.json on startup, into here.
-let transactions = [
-  { id: 1, amount: 500, sender: 'Alice', receiver: 'Bob', status: 'PENDING' },
-  { id: 2, amount: 1200, sender: 'Carol', receiver: 'Dave', status: 'PENDING' },
-];
+let transactions = []
 
 // TODO SE-016: every review decision gets appended here.
 const auditLog = [];
