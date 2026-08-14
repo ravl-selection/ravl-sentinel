@@ -9,6 +9,7 @@
  */
 
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 
@@ -26,8 +27,23 @@ app.use(express.static(path.join(__dirname, '..', 'client')));
 // Application state. In-memory only - no database in this project.
 // ---------------------------------------------------------------------------
 
-// TODO SE-002: load and validate data/transactions.json on startup, into here.
+// TODO SE-002: normalise dates.
+const REQUIRED_FIELDS = [
+  'id',
+  'amount',
+  'sender',
+  'receiver',
+  'date',
+  'flag_reason',
+  'status',
+  'risk_score',
+  'account_ref',
+];
+
+const dataPath = path.join(__dirname, '..', 'data', 'transactions.json');
 let transactions = [];
+const {loadTransactions} = require('./transactionLoader');
+transactions = loadTransactions();
 
 // TODO SE-016: every review decision gets appended here.
 const auditLog = [];
@@ -76,6 +92,7 @@ if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`RAVL Sentinel listening on http://localhost:${PORT}`);
     console.log(`Loaded ${transactions.length} transactions.`);
+    // console.log(transactions);
     console.log('Nothing is implemented yet. SE-002 and SE-003 are the way in.');
   });
 }
