@@ -27,23 +27,8 @@ app.use(express.static(path.join(__dirname, '..', 'client')));
 // Application state. In-memory only - no database in this project.
 // ---------------------------------------------------------------------------
 
-// TODO SE-002: normalise dates.
-const REQUIRED_FIELDS = [
-  'id',
-  'amount',
-  'sender',
-  'receiver',
-  'date',
-  'flag_reason',
-  'status',
-  'risk_score',
-  'account_ref',
-];
-
-const dataPath = path.join(__dirname, '..', 'data', 'transactions.json');
-let transactions = [];
-const {loadTransactions} = require('./transactionLoader');
-transactions = loadTransactions();
+// TODO SE-002: load and validate data/transactions.json on startup, into here.
+let transactions = []
 
 // TODO SE-016: every review decision gets appended here.
 const auditLog = [];
@@ -66,8 +51,24 @@ app.get('/api/transactions', (req, res) => {
     res.status(200).json(sortedTransactions);
 })
 
-// TODO SE-005: return one transaction, or 404.
-app.get('/api/transactions/:id', notImplemented('SE-005'));
+app.get('/api/transactions/:id', (req, res) => {
+  const requestedId = req.params.id;
+  const numericId = Number(requestedId);
+
+  const transaction = transactions.find((record) => {
+    // Number(requestedId) is NaN when the id is not numeric (e.g. "abc") so
+    // fall back to a string comparison. Otherwise compare as numbers.
+    if (Number.isNaN(numericId)) {
+      return String(record.id).toLowerCase() === requestedId.toLowerCase();
+    }
+    return Number(record.id) === numericId;
+  });
+
+  if (!transaction) {
+    return res.status(404).json({ error: 'Transaction not found' });
+  }
+  res.status(200).json(transaction);
+});
 
 // TODO SE-006: record an approval or rejection. Read every acceptance
 // criterion on this story before you design it.
