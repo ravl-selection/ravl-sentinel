@@ -11,7 +11,23 @@
 // TODO SE-007: fetch GET /api/transactions and render the list.
 
 console.log('RAVL Sentinel client loaded. Nothing implemented yet.');
+document.addEventListener("DOMContentLoaded", async () =>{ //Listen to page 
+    const sortTransactionsByStatus = document.getElementById("sortTransactionsByStatus");
 
+    sortTransactionsByStatus.addEventListener("change", () =>{
+        const sortValue = sortTransactionsByStatus.value;
+        const sortedTransactions = []
+        if(sortValue === "amount-high"){
+            sortedTransactions.sort((a,b) => Number(b.amount) - Number(a.amount));
+        }
+
+        else if (sortValue === )
+
+    })
+
+
+
+})
 //Tracks current Filter status
 let currentStatusFilter = 'All';
 
@@ -36,6 +52,10 @@ statusFilterEl.addEventListener('change', (e) => {
   // Re-run the filtering logic and re-render now that the selection changed.
   onStatusFilterChange();
 });
+
+
+
+
 
 
 
