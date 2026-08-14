@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,6 +8,7 @@
   <!-- Everything must be served from this repo. Do not add CDN links. -->
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <header class="app-header">
     <h1>RAVL Sentinel</h1>
@@ -14,9 +16,32 @@
   </header>
 
   <main id="app">
+
     <!-- TODO SE-007: transaction list view -->
+
+    <!-- TODO SE-010 / SE-011 / SE-012: filter and sort controls -->
+    <section class="transaction-controls">
+
+      <!-- SE-010 -->
+      <button id="statusFilter">
+        All Statuses ↑
+      </button>
+
+      <!-- SE-011 -->
+      <button id="riskFilter">
+        All Risk Levels ↑
+      </button>
+
+      <!-- SE-012 -->
+      <button id="sortButton">
+        Sort: Risk ↓
+      </button>
+
+    </section>
+
     <!-- TODO SE-008: transaction detail panel -->
     <h2>Transaction Details</h2>
+
     <section>
       <p>ID</p>
       <p>Risk</p>
@@ -24,15 +49,18 @@
       <p>Receiver:</p>
       <p>Amount:</p>
       <p>Flag:</p>
+    </section>
 
-      </section>
     <!-- TODO SE-017: audit log panel -->
+
     <p class="scaffold-note">
       Nothing is built yet. The API is scaffolded at
       <code>/api/transactions</code> and returns 501 until you implement it.
     </p>
+
   </main>
 
   <script src="app.js"></script>
 </body>
+
 </html>
