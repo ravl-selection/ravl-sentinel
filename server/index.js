@@ -30,11 +30,7 @@ app.use(express.static(path.join(__dirname, '..', 'client')));
 let transactions = [];
 
 // TODO SE-016: every review decision gets appended here.
-const obj1 = { "name": "one", "timestamp": new Date() };
-const obj2 = { "name": "two", "timestamp": new Date(Date.now() + 100) };
-const timestamp1 = new Date();
-const timestamp2 = new Date();
-const auditLog = [obj1, obj2];
+const auditLog = [];
 
 // ---------------------------------------------------------------------------
 // Routes
