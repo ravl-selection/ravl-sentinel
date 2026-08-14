@@ -79,6 +79,10 @@ app.post('/api/transactions/:id/review', express.json(), (req, res) => {
       transaction.status = 'APPROVED';
     } else {
       transaction.status = 'AWAITING_SECOND_APPROVAL';
+      transaction.first_approval = {
+        reviewer: normalizedReviewer,
+        reason: normalizedReason,
+      }
     }
   } else {
     transaction.status = decision;
