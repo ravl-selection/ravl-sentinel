@@ -26,8 +26,47 @@ test('boot the app on an ephemeral port', async () => {
 });
 
 // TODO SE-019: GET /api/transactions returns an array.
+test('GET /api/transactions returns an array', async () => {
+  const res = await fetch(`${baseUrl}/api/transactions`);
+  assert.strictEqual(res.status, 200);
+  const data = await res.json();
+  assert.ok(Array.isArray(data));
+});
+
 // TODO SE-019: POST a valid review returns 200.
+test('POST /api/transactions/:id/review valid review returns 200', async () => {
+  const res = await fetch(`${baseUrl}/api/transactions/${id}/review`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      decision: 'APPROVED',
+      reason: 'Low risk',
+      reviewer: 'testuser',
+    }),
+  });
+  assert.strictEqual(res.status, 200);
+  const data = await res.json();
+  assert.ok(data.id);
+});
+
 // TODO SE-019: POST a review with a missing reason returns 400.
+test('POST /api/transactions/:id/review missing reason returns 400', async () => {
+  const res = await fetch(`${baseUrl}/api/transactions/${id}/review`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      decision: 'APPROVED',
+      reviewer: 'testuser',
+    }),
+  });
+  assert.strictEqual(res.status, 400);
+  const data = await res.json();
+  assert.ok(data.error);
+});
 
 test('placeholder - replace me', async () => {
   const res = await fetch(`${baseUrl}/api/transactions`);
