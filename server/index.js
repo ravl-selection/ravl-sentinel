@@ -9,6 +9,7 @@
  */
 
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 
@@ -41,7 +42,14 @@ app.get('/health', (req, res) => {
 });
 
 // TODO SE-004: return all transactions, highest risk first.
-app.get('/api/transactions', notImplemented('SE-004'));
+// app.get('/api/transactions', notImplemented('SE-004'));
+
+app.get('/api/transactions', (req, res) => {
+  const sortedTransactions = transactions
+      .filter(t => t.status === 'PENDING')
+      .sort((a, b) => b.risk_score - a.risk_score);
+    res.status(200).json(sortedTransactions);
+})
 
 app.get('/api/transactions/:id', (req, res) => {
   const requestedId = req.params.id;
@@ -64,7 +72,57 @@ app.get('/api/transactions/:id', (req, res) => {
 
 // TODO SE-006: record an approval or rejection. Read every acceptance
 // criterion on this story before you design it.
-app.post('/api/transactions/:id/review', notImplemented('SE-006'));
+app.post('/api/transactions/:id/review', express.json(), (req, res) => {
+  const transaction = transactions.find((item) => String(item.id) === req.params.id);
+
+  if (!transaction) {
+    return res.status(404).json({ error: 'Transaction not found' });
+  }
+
+  const { decision, reason, reviewer } = req.body || {};
+  if (!['APPROVED', 'REJECTED'].includes(decision)) {
+    return res.status(400).json({ error: 'decision must be APPROVED or REJECTED' });
+  }
+  if (typeof reason !== 'string' || !reason.trim()) {
+    return res.status(400).json({ error: 'reason is required' });
+  }
+  if (typeof reviewer !== 'string' || !reviewer.trim()) {
+    return res.status(400).json({ error: 'reviewer is required' });
+  }
+
+  const normalizedReviewer = reviewer.trim();
+  const normalizedReason = reason.trim();
+  const firstApproval = auditLog.find(
+    (entry) => entry.transaction_id === transaction.id && entry.decision === 'APPROVED',
+  );
+
+  if (Number(transaction.amount) > 10000 && decision === 'APPROVED') {
+    if (transaction.status === 'AWAITING_SECOND_APPROVAL') {
+      if (firstApproval && firstApproval.reviewer.toLowerCase() === normalizedReviewer.toLowerCase()) {
+        return res.status(400).json({ error: 'Second approval requires a different reviewer' });
+      }
+      transaction.status = 'APPROVED';
+    } else {
+      transaction.status = 'AWAITING_SECOND_APPROVAL';
+      transaction.first_approval = {
+        reviewer: normalizedReviewer,
+        reason: normalizedReason,
+      }
+    }
+  } else {
+    transaction.status = decision;
+  }
+
+  auditLog.push({
+    timestamp: new Date().toISOString(),
+    transaction_id: transaction.id,
+    reviewer: normalizedReviewer,
+    decision,
+    reason: normalizedReason,
+  });
+
+  return res.status(200).json(transaction);
+});
 
 // TODO SE-016: return the full audit log.
 app.get('/api/audit-log', notImplemented('SE-016'));
@@ -85,6 +143,7 @@ if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`RAVL Sentinel listening on http://localhost:${PORT}`);
     console.log(`Loaded ${transactions.length} transactions.`);
+    // console.log(transactions);
     console.log('Nothing is implemented yet. SE-002 and SE-003 are the way in.');
   });
 }
