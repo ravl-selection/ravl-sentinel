@@ -17,14 +17,20 @@
     <!-- TODO SE-007: transaction list view -->
     <!-- TODO SE-008: transaction detail panel -->
     <h2>Transaction Details</h2>
-    <section>
+    <section id = "">
       <p>ID</p>
       <p>Risk</p>
       <p>Sender:</p>
       <p>Receiver:</p>
       <p>Amount:</p>
       <p>Flag:</p>
-
+      <label for = "reviewReason">Justification:</label>
+      <input type = "text" id = "reviewReason" placeholder = "Enter justification">
+      <label for = "reviewName">Reviewer:</label>
+      <input type = "text" id = "reviewerName" placeholder = "Enter Reviewer Name">
+      <button id = "approveBttn">Approve</button>
+      <button id = "rejectBttn">Reject</button>
+      
       </section>
     <!-- TODO SE-017: audit log panel -->
     <p class="scaffold-note">
