@@ -139,7 +139,24 @@ app.post('/api/transactions/:id/review', express.json(), (req, res) => {
 });
 
 // TODO SE-016: return the full audit log.
-app.get('/api/audit-log', notImplemented('SE-016'));
+function isIsoTimestamp(value) {
+  if (typeof value !== 'string') return false;
+  const parsed = new Date(value);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString() === value;
+}
+
+app.get('/api/audit-log', (req, res) => {
+  // order by oldest first
+  const ordered = auditLog.sort((a, b) => {
+    // check if auditLog.timestamp is valid ISO
+    if (!isIsoTimestamp(a) || !isIsoTimestamp(b)) {
+      // fail request if so
+      res.status(404).json({ error: 'Audit log timestamp not in ISO 8601 format'});
+    }
+    // ascending order
+    return new Date(b.timestamp) - new Date(a.timestamp)});
+  res.json({ audit_logs: ordered });
+});
 
 function notImplemented(storyId) {
   return (req, res) => {
