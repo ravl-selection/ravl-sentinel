@@ -30,7 +30,11 @@ app.use(express.static(path.join(__dirname, '..', 'client')));
 let transactions = [];
 
 // TODO SE-016: every review decision gets appended here.
-const auditLog = [];
+const obj1 = { "name": "one", "timestamp": new Date() };
+const obj2 = { "name": "two", "timestamp": new Date(Date.now() + 100) };
+const timestamp1 = new Date();
+const timestamp2 = new Date();
+const auditLog = [obj1, obj2];
 
 // ---------------------------------------------------------------------------
 // Routes
@@ -50,7 +54,24 @@ app.get('/api/transactions/:id', notImplemented('SE-005'));
 app.post('/api/transactions/:id/review', notImplemented('SE-006'));
 
 // TODO SE-016: return the full audit log.
-app.get('/api/audit-log', notImplemented('SE-016'));
+function isIsoTimestamp(value) {
+  if (typeof value !== 'string') return false;
+  const parsed = new Date(value);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString() === value;
+}
+
+app.get('/api/audit-log', (req, res) => {
+  // order by oldest first
+  const ordered = auditLog.sort((a, b) => {
+    // check if auditLog.timestamp is valid ISO
+    if (!isIsoTimestamp(a) || !isIsoTimestamp(b)) {
+      // fail request if so
+      res.status(404).json({ error: 'Audit log timestamp not in ISO 8601 format'});
+    }
+    // ascending order
+    return new Date(b.timestamp) - new Date(a.timestamp)});
+  res.json({ audit_logs: ordered });
+});
 
 function notImplemented(storyId) {
   return (req, res) => {
