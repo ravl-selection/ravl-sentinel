@@ -47,7 +47,53 @@ app.get('/api/transactions/:id', notImplemented('SE-005'));
 
 // TODO SE-006: record an approval or rejection. Read every acceptance
 // criterion on this story before you design it.
-app.post('/api/transactions/:id/review', notImplemented('SE-006'));
+app.post('/api/transactions/:id/review', express.json(), (req, res) => {
+  const transaction = transactions.find((item) => String(item.id) === req.params.id);
+
+  if (!transaction) {
+    return res.status(404).json({ error: 'Transaction not found' });
+  }
+
+  const { decision, reason, reviewer } = req.body || {};
+  if (!['APPROVED', 'REJECTED'].includes(decision)) {
+    return res.status(400).json({ error: 'decision must be APPROVED or REJECTED' });
+  }
+  if (typeof reason !== 'string' || !reason.trim()) {
+    return res.status(400).json({ error: 'reason is required' });
+  }
+  if (typeof reviewer !== 'string' || !reviewer.trim()) {
+    return res.status(400).json({ error: 'reviewer is required' });
+  }
+
+  const normalizedReviewer = reviewer.trim();
+  const normalizedReason = reason.trim();
+  const firstApproval = auditLog.find(
+    (entry) => entry.transaction_id === transaction.id && entry.decision === 'APPROVED',
+  );
+
+  if (Number(transaction.amount) > 10000 && decision === 'APPROVED') {
+    if (transaction.status === 'AWAITING_SECOND_APPROVAL') {
+      if (firstApproval && firstApproval.reviewer.toLowerCase() === normalizedReviewer.toLowerCase()) {
+        return res.status(400).json({ error: 'Second approval requires a different reviewer' });
+      }
+      transaction.status = 'APPROVED';
+    } else {
+      transaction.status = 'AWAITING_SECOND_APPROVAL';
+    }
+  } else {
+    transaction.status = decision;
+  }
+
+  auditLog.push({
+    timestamp: new Date().toISOString(),
+    transaction_id: transaction.id,
+    reviewer: normalizedReviewer,
+    decision,
+    reason: normalizedReason,
+  });
+
+  return res.status(200).json(transaction);
+});
 
 // TODO SE-016: return the full audit log.
 app.get('/api/audit-log', notImplemented('SE-016'));
