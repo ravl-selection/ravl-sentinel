@@ -10,14 +10,14 @@
 
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// TODO SE-003: register the JSON body parser and CORS here, before any routes.
-// Middleware order matters in Express. Work out why before you move on.
-// app.use(cors());
-// app.use(express.json());
+// CORS and the JSON body parser are registered before any routes as middleware order matters in Express.
+app.use(cors());
+app.use(express.json());
 
 // Serves /client so http://localhost:3000 loads the UI. Leave this alone.
 app.use(express.static(path.join(__dirname, '..', 'client')));
@@ -36,8 +36,9 @@ const auditLog = [];
 // Routes
 // ---------------------------------------------------------------------------
 
-// TODO SE-003: return { status: 'ok', uptime: <seconds> }
-app.get('/health', notImplemented('SE-003'));
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', uptime: process.uptime() });
+});
 
 // TODO SE-004: return all transactions, highest risk first.
 app.get('/api/transactions', notImplemented('SE-004'));
@@ -66,7 +67,7 @@ function notImplemented(storyId) {
 // starting a second server on the same port.
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`RAVL Sentinel scaffold listening on http://localhost:${PORT}`);
+    console.log(`RAVL Sentinel listening on http://localhost:${PORT}`);
     console.log(`Loaded ${transactions.length} transactions.`);
     console.log('Nothing is implemented yet. SE-002 and SE-003 are the way in.');
   });
