@@ -17,6 +17,7 @@ const app = require('../server/index.js');
 
 let server;
 let baseUrl;
+let id = '1';
 
 test('boot the app on an ephemeral port', async () => {
   server = app.listen(0);
@@ -73,6 +74,7 @@ test('placeholder - replace me', async () => {
   // The scaffold returns 501. This assertion is here so npm test passes on a
   // fresh clone. Change it to expect 200 once SE-004 is implemented.
   assert.strictEqual(res.status, 501);
+  // assert.strictEqual(res.status, 200); CHANGE TO THIS
 });
 
 test('shut down', () => {
