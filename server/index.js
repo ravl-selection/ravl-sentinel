@@ -43,7 +43,7 @@ app.get('/health', (req, res) => {
 // TODO SE-004: return all transactions, highest risk first.
 // app.get('/api/transactions', notImplemented('SE-004'));
 
-api.get('/api/transactions', (req, res) => {
+app.get('/api/transactions', (req, res) => {
   const sortedTransactions = transactions
       .filter(t => t.status === 'PENDING')
       .sort((a, b) => b.risk_score - a.risk_score);
