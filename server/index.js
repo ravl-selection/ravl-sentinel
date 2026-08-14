@@ -41,7 +41,14 @@ app.get('/health', (req, res) => {
 });
 
 // TODO SE-004: return all transactions, highest risk first.
-app.get('/api/transactions', notImplemented('SE-004'));
+// app.get('/api/transactions', notImplemented('SE-004'));
+
+api.get('/api/transactions', (req, res) => {
+  const sortedTransactions = transactions
+      .filter(t => t.status === 'PENDING')
+      .sort((a, b) => b.risk_score - a.risk_score);
+    res.status(200).json(sortedTransactions);
+})
 
 // TODO SE-005: return one transaction, or 404.
 app.get('/api/transactions/:id', notImplemented('SE-005'));
