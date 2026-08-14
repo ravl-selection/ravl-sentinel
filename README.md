@@ -53,13 +53,13 @@ Every stub carries a `TODO SE-0xx` comment matching a story ID in the backlog.
 
 Agree these in the planning hour and write them down here. Twelve people pushing to one repo without an agreed convention is the single fastest way to lose the afternoon.
 
-**Branching:** _agree and record here_
+**Branching:** Ticket ID
 
-**Commits:** _agree and record here_
+**Commits:** Everyone should follow this convention: https://www.conventionalcommits.org/en/v1.0.0/ 
 
-**Who merges to `main`:** _agree and record here_
+**Who merges to `main`:** Chris and Frick
 
-**Shared client state (SE-010 / SE-011 / SE-012 all change what is on screen):** _agree and record here_
+**Shared client state (SE-010 / SE-011 / SE-012 all change what is on screen):** Jacky, Faraaz, Ahmad (if time persists)
 
 ---
 
