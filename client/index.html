@@ -17,6 +17,31 @@
     <!-- TODO SE-007: transaction list view -->
     <!-- TODO SE-008: transaction detail panel -->
     <!-- TODO SE-017: audit log panel -->
+    <section class="panel audit-panel" id="audit-log-panel">
+      <header class="panel-header">
+        <h2>Audit Log</h2>
+      </header>
+      
+      <div class="audit-log-content">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Transaction ID</th>
+              <th>Reviewer</th>
+              <th>Decision</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- dynamic log entries here -->
+            <tr>
+              <td colspan="5" class="empty-state">No audit logs recorded yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
     <p class="scaffold-note">
       Nothing is built yet. The API is scaffolded at
       <code>/api/transactions</code> and returns 501 until you implement it.
